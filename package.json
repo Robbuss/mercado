@@ -1,0 +1,14 @@
+{
+  "name": "puppet",
+  "version": "1.0.0",
+  "description": "Scrape all tha things ya dig",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vincenzo Di Monforini",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^1.4.0"
+  }
+}
