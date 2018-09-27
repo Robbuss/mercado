@@ -2,16 +2,25 @@ const puppeteer = require('puppeteer');
 const config = require('./config.js');
 
 (async function main() {
-    try {
-        const browser = await puppeteer.launch({ headless: false });
+    puppeteer.launch({
+        headless: false
+    }).then(async browser => {
         const page = await browser.newPage();
-        // maybe set userAgent to chrome like 
 
-        // visit simulation url
+        //TODO:  tackle the login procedure
+
+        // navigate to the page where the data is
         await page.goto(config.config.url);
-        await page.waitForSelector('#sell');
 
-    } catch (e) {
-        console.log(e);
-    }
+        // this indicates the page is refreshed
+        page.on('load', () => {
+
+            // visit simulation url
+            const text = page.evaluate(() => document.querySelector('#sell').textContent);
+            text.then((response) => {
+                // should write this to a file
+                console.log(response);
+            })
+        });
+    });
 })();
