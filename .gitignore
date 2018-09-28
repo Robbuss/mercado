@@ -1,3 +1,6 @@
 node_modules/
 .env
 storage/*
+
+# exception
+!storage/example-out.csv

@@ -8,7 +8,7 @@ var writer = csvWriter()
 class File {
     constructor() {
         this.pathName = path.join(__dirname, './storage/')
-        this.fileName = 'out.csv'
+        this.fileName = moment().format('DD-MM-YYYY') + '.csv'
     }
 
     init(data) {
