@@ -11,7 +11,14 @@ class File {
         this.fileName = moment().format('DD-MM-YYYY') + '.csv'
     }
 
-    init(data) {
+    /** 
+     * accepts an object data with a buy:{} and sell:{}
+     * buy and sell data is structured like:
+     * type(buy or sell)
+     * price
+     * quantity
+    */
+    write(data) {
         console.log('Appending data to: ' + this.pathName + this.fileName)
         // covert data to csv 
         var writer = csvWriter({sendHeaders:false})
@@ -19,7 +26,7 @@ class File {
         writer.pipe(fs.createWriteStream(this.pathName + this.fileName, {flags: 'a'})) 
         // write the actual data, use moment for time stamps
         for(let d in data){
-            writer.write({price:data[d], created_at: moment().format()})
+            writer.write({type: data[d].type, price: data[d].price, qty: data[d].qty, created_at: moment().format()})
         }
         writer.end()
         console.log('Done. Awaiting new reload')

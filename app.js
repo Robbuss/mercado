@@ -1,10 +1,12 @@
 require('dotenv').load();
 const File = require('./File')
+const Parser = require('./Parser')
 const puppeteer = require('puppeteer');
 
 (async function main() {
 
     const file = new File()
+    const parser = new Parser()
 
     // configure puppeteer options
     let headless = true;
@@ -32,16 +34,19 @@ const puppeteer = require('puppeteer');
         await page.on('load', () => {
             console.log('The page has reloaded.')
             const text = page.evaluate(() => {
-                let temp = document.querySelectorAll('.sell tr')
-                let b = []
-                temp.forEach(function (cols) {
-                    b.push(cols.innerText)
-                })
-                return b
+                // 
+                return {
+                    buy: Array.from(document.querySelectorAll('.buy tr')).map((col) => (col.innerText).split("\t")),
+                    sell: Array.from(document.querySelectorAll('.sell tr')).map((col) => (col.innerText).split("\t")),
+                }
             });
             console.log('Getting new data...')
             text.then((response) => {
-                file.init(response)
+                // throw all rows in the parser
+                let parsedData = parser.table(response)
+
+                // write parsed data to file
+                file.write(parsedData)
             }).catch((e) => {
                 console.log(e)
             });
